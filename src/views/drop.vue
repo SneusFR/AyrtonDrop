@@ -43,8 +43,8 @@
     <audio ref="alertSound" :src="require('@/assets/moneydrop.mp3')" />
     <audio ref="suspenseSound" :src="require('@/assets/suspens.mp3')" />
     <audio ref="explosionSound" :src="require('@/assets/explosion.mp3')" />
-    <audio ref="coinSound" :src="require('C:/Users/Sneus/moneydrop/src/assets/coin.wav')" />
-    <audio ref="coinSound2" :src="require('C:/Users/Sneus/moneydrop/src/assets/punch.mp3')" />
+    <audio ref="coinSound" :src="require('@/assets/coin.wav')" />
+    <audio ref="coinSound2" :src="require('@/assets/punch.mp3')" />
     <audio ref="gagnantSound" :src="require('@/assets/gagnant.mp3')" />
     <audio ref="relaxSound" :src="require('@/assets/relax.mp3')" />
     <audio ref="perdantSound" :src="require('@/assets/perdant.mp3')" />
@@ -285,7 +285,7 @@ export default {
 
 @font-face {
   font-family: 'SDGlitch';
-  src: url('C:/Users/Sneus/moneydrop/src/fonts/SDGlitch_Demo.ttf') format('truetype');
+  src: url('../fonts/SDGlitch_Demo.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
