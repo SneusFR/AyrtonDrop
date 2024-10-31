@@ -1,26 +1,23 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="background-gif">
+    <router-view />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.background-gif {
+  background-image: url('@/assets/Beach1.gif'); /* Remplace 'ton-fichier.gif' par le nom de ton fichier */
+  background-size: cover; /* Ajuste pour couvrir l'écran */
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh; /* Hauteur de l'écran */
+  width: 100vw;
+  overflow: hidden;
 }
 </style>
