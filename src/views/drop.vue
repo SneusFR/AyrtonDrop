@@ -1,4 +1,5 @@
 <template>
+  <div class="scale-page">
   <div>
     <!-- Affichage de la question actuelle -->
     <div class="header-image">
@@ -50,7 +51,7 @@
     <audio ref="perdantSound" :src="require('@/assets/perdant.mp3')" />
 
 
-
+  </div>
   </div>
 </template>
 
@@ -313,7 +314,7 @@ export default {
 
 .tokens-container {
   position: absolute;
-  top: 250px;
+  top: 235px;
   width: 100%;
   text-align: center;
 }
@@ -326,8 +327,9 @@ export default {
 }
 
 .token-image {
-  width: 75px;
-  height: 75px;
+  width: 30px;
+  height: 30px;
+
 }
 
 .timer {
@@ -362,6 +364,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.scale-page {
+  zoom: 0.86; /* Réduit le zoom à 75% */
+
+}
+body {
+  zoom: 0.75; /* Réduit le zoom à 75% */
 }
 
 .question-text {
