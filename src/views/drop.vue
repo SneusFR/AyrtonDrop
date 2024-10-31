@@ -366,6 +366,11 @@ export default {
   justify-content: center;
 }
 
+.scale-page {
+  zoom: 0.86; /* Réduit le zoom à 75% */
+
+}
+
 .question-text {
   font-family: 'SDGlitch', sans-serif;
   position: absolute;
