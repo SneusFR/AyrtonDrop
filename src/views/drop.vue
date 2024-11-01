@@ -1,10 +1,20 @@
 <template>
   <div class="scale-page">
   <div>
+
+    <div class="level-container">
+      <div class="level-display">Niveau : {{ currentLevel }}</div>
+      <div class="progress-bar">
+        <div class="progress" :style="{ width: levelProgress + '%' }"></div>
+      </div>
+    </div>
+
     <!-- Affichage de la question actuelle -->
     <div class="header-image">
       <p class="question-text">{{ currentQuestion.question || 'Aucune question disponible' }}</p>
     </div>
+
+
 
     <!-- Affichage du chronomètre -->
     <div class="timer">
@@ -38,6 +48,8 @@
           class="token-image"
         />
       </div>
+      <button class="reduce-timer-button" @click="reduceTimer">Valider</button>
+
     </div>
 
     <!-- Balises audio pour jouer les sons -->
@@ -89,6 +101,9 @@ export default {
       lock: false,
       goodTokens: 0, // Compteur pour les jetons sur la bonne réponse
       badTokens: 0, // Compteur pour les jetons sur les mauvaises réponses
+      currentLevel: 1, // Niveau initial
+      levelProgress: 0, // Progression en pourcentage dans le niveau
+      correctTokens: 0, // Nombre de jetons placés sur la bonne réponse
     };
   },
   mounted() {
@@ -97,6 +112,17 @@ export default {
     } else {
       this.startTimer();
     }
+
+      // Récupération du niveau et de la progression à partir de `localStorage`
+  const savedLevel = localStorage.getItem('currentLevel');
+  const savedProgress = localStorage.getItem('levelProgress');
+  if (savedLevel !== null) {
+    this.currentLevel = parseInt(savedLevel, 10); // Convertit en nombre
+  }
+  if (savedProgress !== null) {
+    this.levelProgress = parseFloat(savedProgress); // Convertit en nombre
+  }
+
   },
   methods: {
     formatTime(seconds) {
@@ -104,6 +130,12 @@ export default {
       const remainingSeconds = seconds % 60;
       return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     },
+
+    reduceTimer() {
+      this.lock = true;
+      this.remainingTime = 3;
+      console.log("Bouton Valider cliqué !");
+  },
     playSound(audioRef) {
       if (audioRef) {
         audioRef.currentTime = 0;
@@ -207,6 +239,12 @@ export default {
       }
 
     }},
+
+    saveLevelData() {
+      console.log('Sauvegarde du niveau et de la progression');
+      localStorage.setItem('currentLevel', this.currentLevel);
+      localStorage.setItem('levelProgress', this.levelProgress);
+    },
     removeToken(index) {
       if (this.lock == false) {
 
@@ -227,11 +265,12 @@ export default {
     evaluateAnswers() {
       const correctAnswerIndex = this.currentQuestion.correctAnswer;
 
-      this.rectangles.forEach((rectangle, index) => {
-        if (index === correctAnswerIndex) {
-          for (let i = 0; i < rectangle.count; i++) {
-            const token = this.tokens.find(token => token.placed);
-            if (token) token.placed = false;
+      this.rectangles.forEach((rectangle, index) => { // Parcours des rectangles
+        if (index === correctAnswerIndex) { // Si le rectangle est la bonne réponse
+          for (let i = 0; i < rectangle.count; i++) { // Parcours des jetons
+            this.correctTokens += 1; // Incrémente le nombre de jetons corrects
+            const token = this.tokens.find(token => token.placed); // Trouve un jeton placé
+            if (token) token.placed = false; 
           }
         } else {
           for (let i = 0; i < rectangle.count; i++) {
@@ -244,7 +283,25 @@ export default {
 
       this.nextQuestion();
     },
+
+    
     nextQuestion() {
+
+            // Calcul des points pour les jetons placés dans la bonne réponse
+      console.log('Nombre de jetons corrects :', this.correctTokens);
+      // Ajoute des points à la progression de niveau
+      this.levelProgress += this.correctTokens;
+      this.correctTokens = 0; // Réinitialise le compteur de jetons corrects
+      
+      // Si la progression atteint 100%, on passe au niveau suivant
+      if (this.levelProgress >= 100) {
+        this.currentLevel += 1; // Incrémente le niveau
+        this.levelProgress = this.levelProgress % 100; // Repart à zéro la progression
+      }
+
+      this.saveLevelData();
+
+
       if (this.currentQuestionIndex < this.selectedPack.questions.length - 1) {
         this.currentQuestionIndex += 1;
         this.startTimer(); // Démarre un nouveau timer pour la question suivante
@@ -253,6 +310,8 @@ export default {
       }
     },
   },
+
+
 };
 </script>
 
@@ -325,6 +384,7 @@ export default {
   gap: 5px;
   flex-wrap: wrap;
 }
+
 
 .token-image {
   width: 30px;
@@ -402,4 +462,57 @@ export default {
   text-align: center;
   width: 100%; /* Prend toute la largeur pour un alignement centré */
 }
+
+.reduce-timer-button {
+  background-color: #cccccc; /* Couleur verte moderne */
+  border: none;
+  color: rgb(60, 173, 16);
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  left : 50px;
+}
+
+.reduce-timer-button:hover {
+  background-color: rgb(43, 226, 55); /* Changement de couleur au survol */
+  transform: scale(0.95); /* Effet de clic */
+
+}
+
+.reduce-timer-button:active {
+  transform: scale(0.95); /* Effet de clic */
+}
+
+.level-container {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.level-display {
+  font-size: 18px;
+  color: #333;
+}
+
+.progress-bar {
+  width: 200px;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  background-color: #007bff;
+  transition: width 0.3s ease;
+}
+
+
 </style>

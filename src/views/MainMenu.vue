@@ -41,23 +41,42 @@ export default {
       packs: [
         {
           questions: [
-            { question: "Comment s'appelle Sneus irl ?", answers: ["Alex", "Valentin", "Julien", "Marc"], correctAnswer: 1 },
-            { question: "Quel est le langage principal utilisé dans Vue.js ?", answers: ["JavaScript", "Python", "Ruby", "PHP"], correctAnswer: 0 },
-            { question: "Combien de planètes gravitent autour du Soleil ?", answers: ["5", "7", "8", "9"], correctAnswer: 0 },
-            { question: "Quelle est la capitale de l'Italie ?", answers: ["Paris", "Madrid", "Rome", "Berlin"], correctAnswer: 2 },
-            { question: "Quel est l'élément chimique avec le symbole O ?", answers: ["Oxygène", "Hydrogène", "Carbone", "Azote"], correctAnswer: 0 },
-            { question: "En quelle année a eu lieu la première guerre mondiale ?", answers: ["1914", "1920", "1939", "1945"], correctAnswer: 0 },
-            { question: "Quel est le plus grand océan du monde ?", answers: ["Atlantique", "Pacifique", "Indien", "Arctique"], correctAnswer: 1 },
-            { question: "Qui a peint la Joconde ?", answers: ["Vincent Van Gogh", "Claude Monet", "Léonard de Vinci", "Pablo Picasso"], correctAnswer: 2 }
-
+          { question: "Quelle particule subatomique a été découverte par J.J. Thomson en 1897 ?", answers: ["Proton", "Neutron", "Électron", "Quark"], correctAnswer: 2 },
+          { question: "Quel est le nom complet de l'équation de Schrödinger ?", answers: ["Équation des ondes", "Équation de Schrödinger-Dirac", "Équation d'onde de Schrödinger", "Équation de probabilité de Schrödinger"], correctAnswer: 2 },
+          { question: "En quelle année Constantinople est-elle tombée ?", answers: ["1423", "1453", "1492", "1501"], correctAnswer: 1 },
+          { question: "Quel est le premier élément synthétisé en laboratoire ?", answers: ["Technétium", "Uranium", "Plutonium", "Radium"], correctAnswer: 0 },
+          { question: "Quelle est la distance moyenne de la Terre au Soleil en millions de kilomètres ?", answers: ["93", "149", "227", "384"], correctAnswer: 1 },
+          { question: "Qui est l'auteur du 'Prince' ?", answers: ["Platon", "Nicolas Machiavel", "Thomas More", "Hobbes"], correctAnswer: 1 },
+          { question: "Quel pays détient la plus grande réserve prouvée de pétrole ?", answers: ["États-Unis", "Russie", "Venezuela", "Arabie Saoudite"], correctAnswer: 2 },
+          { question: "Quelle est la plus petite étoile de type connu ?", answers: ["Naine blanche", "Naine rouge", "Pulsar", "Trou noir"], correctAnswer: 1 },
+          { question: "Quel est le plus ancien texte connu de mathématiques ?", answers: ["Tablettes d'Uruk", "Papyrus de Rhind", "Tablettes de Plimpton 322", "Papyrus d'Ahmès"], correctAnswer: 3 },
           ]
         },
         {
           questions: [
-            { question: "Quelle est la capitale de la France ?", answers: ["Berlin", "Londres", "Madrid", "Paris"], correctAnswer: 3 },
-            { question: "Quelle est la couleur du ciel par temps clair ?", answers: ["Rouge", "Bleu", "Vert", "Jaune"], correctAnswer: 1 },
+          { question: "Quel est le plus ancien texte connu de mathématiques ?", answers: ["Tablettes d'Uruk", "Papyrus de Rhind", "Tablettes de Plimpton 322", "Papyrus d'Ahmès"], correctAnswer: 3 },
+          { question: "Dans quel océan se trouve la fosse des Mariannes ?", answers: ["Atlantique", "Pacifique", "Indien", "Arctique"], correctAnswer: 1 },
+          { question: "Quel philosophe grec a enseigné Alexandre le Grand ?", answers: ["Platon", "Socrate", "Aristote", "Pythagore"], correctAnswer: 2 },
+          { question: "Quel est le nom du premier satellite artificiel lancé par l'URSS en 1957 ?", answers: ["Soyouz", "Saliout", "Mir", "Spoutnik"], correctAnswer: 3 },
+          { question: "Quelle est la formule chimique de l'acide sulfurique ?", answers: ["H2SO4", "HCl", "HNO3", "CH3COOH"], correctAnswer: 0 },
+          { question: "Dans quelle ville se trouve le CERN ?", answers: ["Zurich", "Genève", "Berne", "Lausanne"], correctAnswer: 1 },
+          { question: "Quel scientifique a proposé la théorie de l'évolution par sélection naturelle ?", answers: ["Gregor Mendel", "Jean-Baptiste Lamarck", "Alfred Russel Wallace", "Charles Darwin"], correctAnswer: 3 },
+          { question: "Quel est le nom de la couche la plus externe du Soleil ?", answers: ["Photosphère", "Chromosphère", "Couronne", "Noyau"], correctAnswer: 2 },
           ]
-        },
+        }, {
+
+        questions: [
+        { question: "Dans quelle ville se trouve la bibliothèque d'Alexandrie ?", answers: ["Rome", "Athènes", "Le Caire", "Alexandrie"], correctAnswer: 3 },
+        { question: "Quel mathématicien est connu pour son dernier théorème ?", answers: ["Euler", "Gauss", "Fermat", "Pythagore"], correctAnswer: 2 },
+        { question: "Quel peintre a réalisé 'Les Demoiselles d'Avignon' ?", answers: ["Claude Monet", "Pablo Picasso", "Salvador Dalí", "Henri Matisse"], correctAnswer: 1 },
+        { question: "Quelle est la hauteur de la Tour Eiffel en mètres ?", answers: ["324", "273", "200", "418"], correctAnswer: 0 },
+        { question: "Quel fleuve est le plus long d'Amérique du Sud ?", answers: ["Amazonas", "Paraná", "Orénoque", "Rio de la Plata"], correctAnswer: 0 },
+        { question: "Quel poète latin est l'auteur de l'Énéide ?", answers: ["Homère", "Ovide", "Virgile", "Plaute"], correctAnswer: 2 },
+        { question: "Dans quel pays trouve-t-on le plus de pyramides ?", answers: ["Égypte", "Mexique", "Chine", "Soudan"], correctAnswer: 3 },
+        { question: "Quel code est internationalement reconnu pour désigner une urgence médicale ?", answers: ["Code Bleu", "Code Rouge", "Code Jaune", "Code Noir"], correctAnswer: 0 }
+
+        ]
+      },
       ],
     };
   },
