@@ -2,6 +2,20 @@
   <div class="main-menu">
     <h1 class="title">Ayrton drop</h1>
 
+
+    <!-- Formulaire pour entrer le pseudo -->
+    <form @submit.prevent="startGame">
+      <label for="pseudo">Pseudo :</label>
+      <input
+        type="text"
+        id="pseudo"
+        v-model="pseudo"
+        placeholder="Entrez votre pseudo"
+      />
+    </form>
+
+    
+
     <!-- Bouton Jouer avec une image et un effet de zoom au survol -->
     <div class="play-button-container">
       <img 
@@ -84,7 +98,7 @@ export default {
     selectPack(pack) {
       const packStore = usePackStore();
       packStore.setSelectedPack(pack);
-      this.$router.push({ name: 'drop' });
+      this.$router.push({ name: 'drop', params: { pseudo: this.pseudo } });
     },
   },
 };
@@ -113,6 +127,7 @@ export default {
 
 .play-button-container {
   margin: 20px 0;
+  left : 50px;
 }
 
 .play-button {
@@ -169,5 +184,18 @@ export default {
 .pack-card p {
   font-size: 0.9rem;
   color: #cccccc;
+}
+
+form {
+  top : 250px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 200px;
+  margin-top: 10px;
 }
 </style>

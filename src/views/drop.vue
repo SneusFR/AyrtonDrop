@@ -3,11 +3,14 @@
   <div>
 
     <div class="level-container">
+      <img v-if="equippedSkinImage" :src="equippedSkinImage" alt="Skin équipé" class="equipped-skin-image" />
+      <div class="pseudo-display" v-if="pseudo">{{ pseudo }}</div>
       <div class="level-display">Niveau : {{ currentLevel }}</div>
       <div class="progress-bar">
         <div class="progress" :style="{ width: levelProgress + '%' }"></div>
       </div>
     </div>
+    <img src="@/assets/boussole.png" alt="Boussole" class="boussole-image" />
 
     <!-- Affichage de la question actuelle -->
     <div class="header-image">
@@ -18,7 +21,7 @@
 
     <!-- Affichage du chronomètre -->
     <div class="timer">
-      <p>Temps restant : {{ formatTime(remainingTime) }}</p>
+      <p>{{ formatTime(remainingTime) }}</p>
     </div>
 
     <!-- Conteneur pour les rectangles avec les réponses -->
@@ -39,15 +42,20 @@
     <!-- Affichage des jetons disponibles sous forme d'images -->
     <div class="tokens-container">
       <p class='jetondisponible'>Jetons disponibles :</p>
-      <div class="tokens">
-        <img
-          v-for="(token, index) in availableTokens"
-          :key="index"
-          :src="require('@/assets/money.png')"
-          alt="Jeton"
-          class="token-image"
-        />
-      </div>
+  <!-- Conteneur pour l'image du portefeuille et les jetons -->
+  <div class="wallet-container">
+    <img src="@/assets/portefeuille.png" alt="Portefeuille" class="wallet-image" />
+
+    <!-- Images des jetons dispersées sur le portefeuille -->
+    <img
+    v-for="(token, index) in availableTokens"
+      :key="index"
+      :src="require('@/assets/money.png')"
+      alt="Jeton"
+      class="token-image"
+      :style="getTokenPosition()"
+    />
+  </div>
       <button class="reduce-timer-button" @click="reduceTimer">Valider</button>
 
     </div>
@@ -73,6 +81,11 @@ import { usePackStore } from '@/stores/usePackStore';
 export default {
   name: 'dropView',
   computed: {
+
+    pseudo() {
+      return this.$route.params.pseudo || "GuestKL"; // Définit "GestKL" si aucun pseudo n'est passé
+    },
+
     selectedPack() {
       const packStore = usePackStore();
       return packStore.selectedPack;
@@ -104,6 +117,8 @@ export default {
       currentLevel: 1, // Niveau initial
       levelProgress: 0, // Progression en pourcentage dans le niveau
       correctTokens: 0, // Nombre de jetons placés sur la bonne réponse
+      equippedSkinImage: null // Image du skin équipé
+
     };
   },
   mounted() {
@@ -116,6 +131,18 @@ export default {
       // Récupération du niveau et de la progression à partir de `localStorage`
   const savedLevel = localStorage.getItem('currentLevel');
   const savedProgress = localStorage.getItem('levelProgress');
+
+  const equippedSkin = localStorage.getItem('equippedSkin'); // Initialiser equippedSkin ici
+
+    if (equippedSkin) {
+      const skinImages = {
+        "Skin Légendaire": require('@/assets/level100.png'),
+        "Skin Épique": require('@/assets/play.png'),
+        "Skin Classique": require('@/assets/play.png'),
+      };
+      this.equippedSkinImage = skinImages[equippedSkin] || null;
+    }
+
   if (savedLevel !== null) {
     this.currentLevel = parseInt(savedLevel, 10); // Convertit en nombre
   }
@@ -130,6 +157,22 @@ export default {
       const remainingSeconds = seconds % 60;
       return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     },
+
+    getTokenPosition() {
+  const minX = 30; // Position minimum en pourcentage pour `left`
+  const maxX = 60; // Position maximum en pourcentage pour `left`
+  const minY = 35; // Position minimum en pourcentage pour `top`
+  const maxY = 65; // Position maximum en pourcentage pour `top`
+
+  const randomX = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+  const randomY = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+
+  return {
+    position: 'absolute',
+    top: `${randomY}%`,
+    left: `${randomX}%`,
+  };
+},
 
     reduceTimer() {
       this.lock = true;
@@ -371,12 +414,6 @@ export default {
   font-size: 25px;
 }
 
-.tokens-container {
-  position: absolute;
-  top: 235px;
-  width: 100%;
-  text-align: center;
-}
 
 .tokens {
   display: flex;
@@ -386,18 +423,35 @@ export default {
 }
 
 
-.token-image {
-  width: 30px;
-  height: 30px;
+.tokens-container {
+  position: relative;
+  text-align: center;
+  margin-top: -1050px; /* Ajuste cette valeur pour placer les jetons plus haut */
+  right : 600px;
 
 }
 
+.wallet-container {
+  position: relative;
+  display: inline-block;
+}
+
+.wallet-image {
+  width: 400px; /* Ajustez la taille selon vos besoins */
+  height: auto;
+}
+
+.token-image {
+  width: 30px;
+  height: 30px;
+}
+
 .timer {
-  font-family: 'SDGlitch', sans-serif;
   position: absolute;
-  top: 200px;
-  width: 100%;
-  text-align: center;
+  top: 190px;
+  left: 83.8%; /* Utilise un pourcentage pour rester dans la page */
+  transform: translateX(-50%); /* Centrage horizontal */
+  font-family: 'SDGlitch', sans-serif;
   font-size: 35px;
   font-weight: bold;
 }
@@ -495,8 +549,10 @@ export default {
 }
 
 .level-display {
-  font-size: 18px;
+  font-family: 'SDGlitch', sans-serif;
+  font-size: 28px;
   color: #333;
+  font-weight: bold;
 }
 
 .progress-bar {
@@ -514,5 +570,26 @@ export default {
   transition: width 0.3s ease;
 }
 
+.pseudo-display {
+  font-family: 'SDGlitch', sans-serif;
+  font-size: 28px;
+  color: #ffffff;
+  margin-right: 15px; /* Séparation avec le niveau */
+  font-weight: bold;
+
+}
+
+.equipped-skin-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.boussole-image {
+  position : absolute;
+  width: 400px; /* Ajuste la taille de l'image selon tes besoins */
+  height: auto;
+  left : 1300px;
+}
 
 </style>
