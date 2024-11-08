@@ -1,5 +1,7 @@
 <template>
     <div class="shop-container">
+      <button @click="goBack" class="back-button">Retour</button>
+
       <p class="shop-subtitle">
       </p>  
       <div class="skin-carousel">
@@ -59,16 +61,16 @@
           {
             name: "Skin Épique",
             price: 150,
-            requiredLevel: 5,
+            requiredLevel: 10,
             description: "Un skin épique pour impressionner vos amis.",
-            image: require('@/assets/play.png'),
+            image: require('@/assets/level10.png'),
             unlocked: JSON.parse(localStorage.getItem('Skin Épique')) || false,
           },
           {
             name: "Skin Classique",
             price: 0,
             requiredLevel: 1,
-            description: "Un skin classique gratuit pour tous les joueurs.",
+            description: "T'es qu'une grosse merde, voilà tout.",
             image: require('@/assets/play.png'),
             unlocked: true, // Toujours débloqué par défaut
           },
@@ -87,6 +89,9 @@
       selectSkin(skin) {
         this.selectedSkin = skin;
       },
+      goBack() {
+      this.$router.push('/');
+    },
       purchaseSkin() {
         if (this.canAfford) {
           this.selectedSkin.unlocked = true;
@@ -227,5 +232,22 @@
       top : -100px;
       position: relative;
     }
+
+    .back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #d32f2f;
+}
   </style>
   

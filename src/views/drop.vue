@@ -104,7 +104,7 @@ export default {
     return {
       tokens: Array.from({ length: 20 }, () => ({ placed: false })),
       rectangles: Array.from({ length: 4 }, () => ({ count: 0 })),
-      remainingTime: 165,
+      remainingTime: 85,
       soundPlayed: false,
       suspensePlayed: false,
       explosionTriggered: false,
@@ -137,7 +137,7 @@ export default {
     if (equippedSkin) {
       const skinImages = {
         "Skin Légendaire": require('@/assets/level100.png'),
-        "Skin Épique": require('@/assets/play.png'),
+        "Skin Épique": require('@/assets/level10.png'),
         "Skin Classique": require('@/assets/play.png'),
       };
       this.equippedSkinImage = skinImages[equippedSkin] || null;
@@ -204,7 +204,7 @@ export default {
       }
 
       // Réinitialise tous les sons et états à zéro
-      this.remainingTime = 165;
+      this.remainingTime = 85;
       this.soundPlayed = false;
       this.suspensePlayed = false;
       this.explosionTriggered = false;
@@ -218,19 +218,19 @@ export default {
         if (this.remainingTime > 0) {
           this.remainingTime--;
 
-          if (this.remainingTime === 164 && !this.soundPlayed) {
+          if (this.remainingTime === 84 && !this.soundPlayed) {
             this.playSound(this.$refs.relaxSound);
             this.relaxPlayed = true;
           }
 
           if (this.remainingTime === 45 && !this.soundPlayed) {
             this.playSound(this.$refs.alertSound);
-            this.lock = true;
             this.soundPlayed = true;
           }
 
           if (this.remainingTime === 1 && !this.suspensePlayed) {
             this.remainingTime = 36;
+            this.lock = true;
             this.playSound(this.$refs.suspenseSound);
             this.suspensePlayed = true;
           }

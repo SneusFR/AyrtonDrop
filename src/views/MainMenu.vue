@@ -1,20 +1,33 @@
 <template>
   <div class="main-menu">
-    <h1 class="title">Ayrton drop</h1>
+    <img src="@/assets/AyrtonDrop.png" alt="Ayrton Drop" class="title-image" />
 
 
     <!-- Formulaire pour entrer le pseudo -->
     <form @submit.prevent="startGame">
-      <label for="pseudo">Pseudo :</label>
+      <label for="pseudo"></label>
       <input
         type="text"
         id="pseudo"
         v-model="pseudo"
         placeholder="Entrez votre pseudo"
       />
+      <button @click="goToShop" class="shop-button">Aller au Shop</button>
+
     </form>
 
     
+    <div v-if="selectedPack" class="password-prompt">
+  <label for="password">Mot de passe pour ce pack :</label>
+  <input
+    type="password"
+    id="password"
+    v-model="enteredPassword"
+    placeholder="Entrez le mot de passe"
+  />
+  <button @click="validatePassword">Valider</button>
+  <p v-if="passwordError" class="error">Mot de passe incorrect</p>
+</div>
 
     <!-- Bouton Jouer avec une image et un effet de zoom au survol -->
     <div class="play-button-container">
@@ -24,19 +37,23 @@
         class="play-button"
         @click="showPacks = !showPacks" 
       />
+      
     </div>
+
+    
 
     <!-- Sélection de pack de questions avec un style de niveau de jeu -->
     <div v-if="showPacks" class="packs-selection">
       <h2 class="packs-title">Choisissez un pack de questions :</h2>
       <div class="packs-list">
         <div 
-          v-for="(pack, index) in packs" 
-          :key="index" 
-          class="pack-card"
-          @click="selectPack(pack)"
-        >
-          <h3>Pack de question TEST {{ index + 1 }}</h3>
+  v-for="(pack, index) in packs" 
+  :key="index" 
+  class="pack-card"
+  @click="promptPassword(pack)"
+>
+        
+          <h3>Pack de question AYRTON DROP {{ index + 1 }}</h3>
           <p>Questions: {{ pack.questions.length }}</p>
         </div>
       </div>
@@ -51,47 +68,77 @@ export default {
   name: 'MainMenu',
   data() {
     return {
+      selectedPack: null,
+      enteredPassword: '',
+      passwordError: false,
       showPacks: false,
       packs: [
         {
+          password: "GrosPorc",
           questions: [
-          { question: "Quelle particule subatomique a été découverte par J.J. Thomson en 1897 ?", answers: ["Proton", "Neutron", "Électron", "Quark"], correctAnswer: 2 },
-          { question: "Quel est le nom complet de l'équation de Schrödinger ?", answers: ["Équation des ondes", "Équation de Schrödinger-Dirac", "Équation d'onde de Schrödinger", "Équation de probabilité de Schrödinger"], correctAnswer: 2 },
-          { question: "En quelle année Constantinople est-elle tombée ?", answers: ["1423", "1453", "1492", "1501"], correctAnswer: 1 },
-          { question: "Quel est le premier élément synthétisé en laboratoire ?", answers: ["Technétium", "Uranium", "Plutonium", "Radium"], correctAnswer: 0 },
-          { question: "Quelle est la distance moyenne de la Terre au Soleil en millions de kilomètres ?", answers: ["93", "149", "227", "384"], correctAnswer: 1 },
-          { question: "Qui est l'auteur du 'Prince' ?", answers: ["Platon", "Nicolas Machiavel", "Thomas More", "Hobbes"], correctAnswer: 1 },
-          { question: "Quel pays détient la plus grande réserve prouvée de pétrole ?", answers: ["États-Unis", "Russie", "Venezuela", "Arabie Saoudite"], correctAnswer: 2 },
-          { question: "Quelle est la plus petite étoile de type connu ?", answers: ["Naine blanche", "Naine rouge", "Pulsar", "Trou noir"], correctAnswer: 1 },
-          { question: "Quel est le plus ancien texte connu de mathématiques ?", answers: ["Tablettes d'Uruk", "Papyrus de Rhind", "Tablettes de Plimpton 322", "Papyrus d'Ahmès"], correctAnswer: 3 },
+            { question: "Où est né Ronaldinho ?", answers: ["São Paulo", "Rio de Janeiro", "Porto Alegre", "Brasilia"], correctAnswer: 2 },
+            { question: "D'après Mevko, Emmop est le petit frère de ?", answers: ["Hitler", "De Bruyne", "Un gars qu'il connait", "Johnny Bravo"], correctAnswer: 1 },
+            { question: "Quel pirate légendaire aurait enterré un trésor qu’on n'a jamais retrouvé sur l'île d'Oak Island ?", answers: ["William Kidd", "Bartholomew Roberts", "Henry Morgan", "Edward Teach"], correctAnswer: 0 },
+            { question: "Combien de livres Alain Soral a-t-il écrits ?", answers: ["8", "17", "21", "23"], correctAnswer: 1 },
+            { question: "Combien d'Unpopular Opinions Kamat a-t-il posté au sein du channel dédié ?", answers: ["38", "51", "23", "68"], correctAnswer: 0 },
+            { question: "Quelle était la note du rap de Kamat sur le Touchy Subject de SNEUS ?", answers: ["2.22", "2.19", "2.20", "2.10"], correctAnswer: 1 },
+            { question: "Quel est le nom de l'île où Adona est retenue captive dans l'Empire des Femmes 2 ?", answers: ["Sapientia", "Teneros", "Elysia", "Arcadia"], correctAnswer: 1 },
+            { question: "Qui est le doubleur actuel de Scooby-Doo en version française ?", answers: ["Mathias Kozlowski", "Éric Missoffe", "Laurent Larcher", "Patrick Poivey"], correctAnswer: 1 }
           ]
         },
         {
+          password : "Fofana",
           questions: [
-          { question: "Quel est le plus ancien texte connu de mathématiques ?", answers: ["Tablettes d'Uruk", "Papyrus de Rhind", "Tablettes de Plimpton 322", "Papyrus d'Ahmès"], correctAnswer: 3 },
-          { question: "Dans quel océan se trouve la fosse des Mariannes ?", answers: ["Atlantique", "Pacifique", "Indien", "Arctique"], correctAnswer: 1 },
-          { question: "Quel philosophe grec a enseigné Alexandre le Grand ?", answers: ["Platon", "Socrate", "Aristote", "Pythagore"], correctAnswer: 2 },
-          { question: "Quel est le nom du premier satellite artificiel lancé par l'URSS en 1957 ?", answers: ["Soyouz", "Saliout", "Mir", "Spoutnik"], correctAnswer: 3 },
-          { question: "Quelle est la formule chimique de l'acide sulfurique ?", answers: ["H2SO4", "HCl", "HNO3", "CH3COOH"], correctAnswer: 0 },
-          { question: "Dans quelle ville se trouve le CERN ?", answers: ["Zurich", "Genève", "Berne", "Lausanne"], correctAnswer: 1 },
-          { question: "Quel scientifique a proposé la théorie de l'évolution par sélection naturelle ?", answers: ["Gregor Mendel", "Jean-Baptiste Lamarck", "Alfred Russel Wallace", "Charles Darwin"], correctAnswer: 3 },
-          { question: "Quel est le nom de la couche la plus externe du Soleil ?", answers: ["Photosphère", "Chromosphère", "Couronne", "Noyau"], correctAnswer: 2 },
+            { question: "Quelle est la valeur marchande de Malick Fofana ?", answers: ["1M", "5M", "10M", "15M"], correctAnswer: 3 },
+            { question: "Quelle danse Fortnite Antoine Griezmann a-t-il réalisée en finale de CDM ?", answers: ["Electro Shuffle", "Take the L", "Orange Justice", "Floss"], correctAnswer: 1 },
+            { question: "Quel rappeur existe vraiment ?", answers: ["Sopranal", "Payday", "Nekcouille", "CacaGangz"], correctAnswer: 0 },
+            { question: "Passe-moi le cro-mi, que j’me serve de ma tête comme le but de ?", answers: ["Eric Cantona", "Manuel Amoros", "Basile Boli", "Jean Pierre Papin"], correctAnswer: 2 },
+            { question: "Quel langage de script Frostbite utilise-t-il pour la création de comportements dans les jeux FIFA ?", answers: ["Ruby", "Python", "Java", "C++"], correctAnswer: 0 },
+            { question: "Combien de followers possède actuellement Claude sur Instagram ?", answers: ["565k", "670k", "350k", "850k"], correctAnswer: 0 },
+            { question: "Parmi les animaux suivants, lequel a le plus petit pénis en proportion de sa taille ?", answers: ["La musaraigne étrusque", "Le colibri", "Le coléoptère", "La chauve-souris pipistrelle"], correctAnswer: 2 },
+            { question: "Que signifie le mot latin 'cacare' ?", answers: ["faire caca", "gargariser", "alléger", "subtiliser"], correctAnswer: 0 }
           ]
-        }, {
-
-        questions: [
-        { question: "Dans quelle ville se trouve la bibliothèque d'Alexandrie ?", answers: ["Rome", "Athènes", "Le Caire", "Alexandrie"], correctAnswer: 3 },
-        { question: "Quel mathématicien est connu pour son dernier théorème ?", answers: ["Euler", "Gauss", "Fermat", "Pythagore"], correctAnswer: 2 },
-        { question: "Quel peintre a réalisé 'Les Demoiselles d'Avignon' ?", answers: ["Claude Monet", "Pablo Picasso", "Salvador Dalí", "Henri Matisse"], correctAnswer: 1 },
-        { question: "Quelle est la hauteur de la Tour Eiffel en mètres ?", answers: ["324", "273", "200", "418"], correctAnswer: 0 },
-        { question: "Quel fleuve est le plus long d'Amérique du Sud ?", answers: ["Amazonas", "Paraná", "Orénoque", "Rio de la Plata"], correctAnswer: 0 },
-        { question: "Quel poète latin est l'auteur de l'Énéide ?", answers: ["Homère", "Ovide", "Virgile", "Plaute"], correctAnswer: 2 },
-        { question: "Dans quel pays trouve-t-on le plus de pyramides ?", answers: ["Égypte", "Mexique", "Chine", "Soudan"], correctAnswer: 3 },
-        { question: "Quel code est internationalement reconnu pour désigner une urgence médicale ?", answers: ["Code Bleu", "Code Rouge", "Code Jaune", "Code Noir"], correctAnswer: 0 }
-
-        ]
-      },
-      ],
+        },
+        {
+          password : "BostonRobGigi",
+          questions: [
+            { question: "Quelle porte, située dans une ville européenne, est souvent appelée 'la porte du soleil' ?", answers: ["La Porte de Brandebourg à Berlin", "La Porte du Soleil à Madrid", "La Porte de l'Orient à Istanbul", "La Porte de l'Alcazar à Séville"], correctAnswer: 1 },
+            { question: "Quelle est l'actrice principale de la série Buffy contre les vampires ?", answers: ["Sarah Michelle Gellar", "Alyson Hannigan", "Eliza Dushku", "Buffy du discord"], correctAnswer: 0 },
+            { question: "Dans quelle ville est né Boston Rob ?", answers: ["New York", "Los Angeles", "Tampa", "Hyde Park"], correctAnswer: 3 },
+            { question: "Quel gaz est principalement responsable de l'odeur des flatulences ?", answers: ["Méthane", "Dioxyde de carbone", "Sulfure d'hydrogène", "Azote"], correctAnswer: 2 },
+            { question: "Combien de fois le Nword a été posté sur le discord Ayrton ?", answers: ["26", "109", "155", "263"], correctAnswer: 1 },
+            { question: "Dans quel tome apparaît pour la première fois Negan ? ", answers: ["12", "14", "17", "18"], correctAnswer: 2 },
+            { question: "Quel auteur latin est à l'origine de la célèbre locution 'Carpe Diem' ?", answers: ["Cicéron", "Virgile", "Sénèque", "Horace"], correctAnswer: 3 },
+            { question: "Dans le roman Les Trois Mousquetaires d'Alexandre Dumas, deux des mousquetaires se nomment Athos et Porthos. Comment s'appelle le troisième mousquetaire ?", answers: ["Aramis", "D'Artagnan", "Planchet", "Richelieu"], correctAnswer: 0 }
+          ]
+        },
+        {
+          password : "Rachel",
+          questions: [
+            { question: "De qui vient le t-shirt 'Ah batard tu fumes ?!'", answers: ["Arouf Gangsta", "Stromae", "Kalash Criminel", "Lacrim"], correctAnswer: 3 },
+            { question: "Quel élément est associé aux signes de la Vierge, du Taureau et du Capricorne ?", answers: ["Air", "Feu", "Terre", "Eau"], correctAnswer: 2 },
+            { question: "Quel est le nom de famille de Joelle de Koh-Lanta Palau ?", answers: ["Bernard", "Bourlier", "Boutin", "Cartaux"], correctAnswer: 1 },
+            { question: "Dans Unity, quel type de lumière projette des ombres en temps réel et simule le soleil ?", answers: ["Point Light", "Spot Light", "Directional Light", "Area Light"], correctAnswer: 2 },
+            { question: "Lequel de ces noms de personnages de Breaking Bad n'existe pas dans les versions étrangères ?", answers: ["Walter Blanco", "Gustavo Pizza", "José Miguel Rosas", "Saúl Bueno"], correctAnswer: 1 },
+            { question: "Dans le film Détour mortel, quel est le nom de la famille de cannibales ?", answers: ["Les Odets", "Les Hilliker", "Les Sawyer", " Les Pessi"], correctAnswer: 2 },
+            { question: "Quelle est la traduction italienne la plus appropriée pour la phrase ci-dessus ?", answers: ["È mancato poco.", "È stato per un pelo.", "Ha quasi fallito.", "È stato un soffio"], correctAnswer: 1 },
+            { question: "Qui a produit le film 'Zone d'intérêt' ?", answers: ["Focus Features", "Focus Academy", "Film4 Productions", "Sony Pictures"], correctAnswer: 2 }
+          ]
+        },
+        {
+          password : "Titeuf",
+          questions: [
+            { question: "Merci Titeuf pour :", answers: ["Cette belle balade", "La pipe", "Les 5 subs", "Ce merveilleux voyage"], correctAnswer: 3 },
+            { question: "Quelle était la première photo de profil du compte Kl.leaks ?", answers: ["ALJ", "Denis Brogniart", "Julien Magne", "Cocktail"], correctAnswer: 0 },
+            { question: "Quelle taille faisait le plus gros caca jamais découvert ?", answers: ["20cm", "10cm", "55cm", "68cm"], correctAnswer: 0 },
+            { question: "Quel est l'alcool le plus fort du monde ?", answers: ["Cocoroco", "Spirytus Rektyfikowany", "Everclear", "Bruichladdich X4 Quadrupled Whiskey"], correctAnswer: 0 },
+            { question: "En quelle année Patrick Sabatier a-t-il animé N'oubliez pas les paroles ?", answers: ["2007", "2008", "2009", "2010"], correctAnswer: 1 },
+            { question: "Dans quelle ville est né Ponce le streamer ?", answers: ["Nîmes", "Orange", "Avignon", "Carpentras"], correctAnswer: 2 },
+            { question: "Qui est le nain le plus petit ?", answers: ["Verne Troyer", "Peter Dinklage", "Mimi Mathy", "Warwick Davis"], correctAnswer: 0 },
+            { question: "Quelle est la profondeur de la fosse des Mariannes, le point océanique le plus profond connu sur Terre ?", answers: ["8 848 mètres", "10 994 mètres", "11 034 mètres", "12 011 mètres"], correctAnswer: 2 }
+          ]
+        }
+      ]
     };
   },
   methods: {
@@ -100,6 +147,27 @@ export default {
       packStore.setSelectedPack(pack);
       this.$router.push({ name: 'drop', params: { pseudo: this.pseudo } });
     },
+    promptPassword(pack) {
+    this.selectedPack = pack;
+    this.enteredPassword = '';
+    this.passwordError = false;
+  },
+
+  goToShop() {
+    this.$router.push('/shop');
+  },
+
+
+  validatePassword() {
+  if (this.enteredPassword === this.selectedPack.password) {
+    const packStore = usePackStore();
+    packStore.setSelectedPack(this.selectedPack);
+    this.$router.push({ name: 'drop', params: { pseudo: this.pseudo } });
+  } else {
+    this.passwordError = true;
+  }
+}
+
   },
 };
 </script>
@@ -126,12 +194,11 @@ export default {
 }
 
 .play-button-container {
-  margin: 20px 0;
   left : 50px;
 }
 
 .play-button {
-  width: 300px;
+  width: 100px;
   transition: transform 0.3s ease;
   cursor: pointer;
 }
@@ -187,7 +254,8 @@ export default {
 }
 
 form {
-  top : 250px;
+  top : 420px;
+  margin-right:  10px;
 }
 
 input[type="text"] {
@@ -198,4 +266,34 @@ input[type="text"] {
   width: 200px;
   margin-top: 10px;
 }
+
+.password-prompt {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+}
+
+.shop-button {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #00ff99;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  margin-left: 10px;
+}
+
+.shop-button:hover {
+  transform: scale(1.1);
+}
+
+.title-image {
+  width: 300px; /* Ajuste la largeur selon tes besoins */
+}
+
 </style>
